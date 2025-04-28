@@ -1,0 +1,25 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+import joblib
+
+# Gerar dados fictícios
+sales_data = {
+    "Event": np.random.choice([0, 1, 2, 3], 1000),
+    "Temperature": np.random.randint(5, 35, 1000),
+    "Quantity_Sold": np.random.randint(10, 100, 1000),
+}
+sales_df = pd.DataFrame(sales_data)
+
+# Preparar dados
+X = sales_df[["Event", "Temperature"]]
+y = sales_df["Quantity_Sold"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Treinar modelo
+model = RandomForestRegressor(random_state=42)
+model.fit(X_train, y_train)
+
+# Salvar modelo
+joblib.dump(model, "demand_forecast_model.pkl")
